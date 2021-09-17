@@ -1,0 +1,32 @@
+version: "3"
+services:
+
+  postgresql:
+    image: postgres
+    networks:
+     - drupal-net
+    env_file:
+      - variables.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    ports:
+      - 443:8080
+    networks:
+      - drupal-net
+
+  drupal:
+    image: drupal
+    ports:
+      - 80:80
+    networks:
+      - drupal-net
+    env_file:
+      - variables.env
+    volumes:
+      - drupal_modules:/var/www/html/modules
+      - drupal_profiles:/var/www/html/profiles
+      - drupal:themes:/var/www/html/themes
+      - ./sites:/var/www/html/sites
